@@ -34,10 +34,10 @@ class TestScopedCss < Minitest::Test
     assert_equal "abc123-another-class", mapping[:'another-class']
   end
 
-  def test_scoped_style
+  def test_scoped_css
     css = ".header { font-weight: bold; }"
 
-    prefixed_css, styles = @helper.scoped_style do
+    prefixed_css, styles = @helper.scoped_css do
       css
     end
 
@@ -46,10 +46,10 @@ class TestScopedCss < Minitest::Test
     assert_equal "#{prefix}-header", styles[:header]
   end
 
-  def test_scoped_style_in_template
+  def test_scoped_css_in_template
     css = ".header { font-weight: bold; } .content { margin: 10px; }"
 
-    prefixed_css, styles = @helper.scoped_style do
+    prefixed_css, styles = @helper.scoped_css do
       css
     end
 
@@ -68,12 +68,12 @@ class TestScopedCss < Minitest::Test
     css = ".box { border: 1px solid black; }"
 
     # First call should generate the prefixed CSS
-    prefixed_css1, styles1 = @helper.scoped_style do
+    prefixed_css1, styles1 = @helper.scoped_css do
       css
     end
 
     # Second call with same content should return empty CSS but same mapping
-    prefixed_css2, styles2 = @helper.scoped_style do
+    prefixed_css2, styles2 = @helper.scoped_css do
       css
     end
 

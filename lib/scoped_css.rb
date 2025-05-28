@@ -2,7 +2,7 @@ require_relative "version"
 
 module ScopedCss
   module Helper
-    def scoped_style(&css_block)
+    def scoped_css(&css_block)
       @per_template_outputs ||= Hash.new
 
       css_block_content = ""
