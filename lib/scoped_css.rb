@@ -1,5 +1,6 @@
 require_relative "version"
 require "digest/sha2"
+require "erb"
 
 module ScopedCss
   module Helper
@@ -27,6 +28,40 @@ module ScopedCss
       return [result, styles, prefix]
     end
 
+    # Helper to take attribute hashes (or strings for classes) and format them
+    # into a string suitable for direct HTML attribute "splatting".
+    #
+    # Example usage in ERB:
+    # <section <%= splat_attributes(@attributes, styles[:section]) %>>
+    #   <%= content %>
+    # </section>
+    #
+    # @param args [Array<Hash, String>] One or more attribute hashes or class strings
+    # @return [String] A string of HTML attributes (e.g., 'class="foo bar" id="my-id"')
+    def splat_attributes(*args)
+      combined_attributes = merge_classes(*args)
+
+      # Convert the combined hash into an HTML attribute string
+      result = combined_attributes.map do |key, value|
+        html_key = key.to_s.dasherize
+        escaped_value = ERB::Util.html_escape(value.to_s)
+
+        # Handle boolean attributes (e.g., 'disabled' instead of 'disabled="true"')
+        if value.is_a?(TrueClass) && !html_key.empty?
+          html_key
+        elsif value.is_a?(FalseClass)
+          # Don't render attributes that are explicitly false
+          nil
+        elsif !escaped_value.empty?
+          "#{html_key}=\"#{escaped_value}\""
+        else
+          nil # Don't render attributes with empty values
+        end
+      end.compact.join(" ").strip
+
+      result.respond_to?(:html_safe) ? result.html_safe : result
+    end
+
     private
 
     def prefix_css_classes(css_string, prefix)
@@ -42,6 +77,20 @@ module ScopedCss
       end
 
       return updated_css_string, class_name_map
+    end
+
+    def merge_classes(attributes, *css_classes)
+      merged_attributes = attributes.dup
+
+      css_class_string = css_classes.compact.join(" ").strip
+
+      if merged_attributes[:class].nil? || merged_attributes[:class].empty?
+        merged_attributes[:class] = css_class_string
+      else
+        merged_attributes[:class] = "#{css_class_string} #{merged_attributes[:class]}".strip
+      end
+
+      merged_attributes
     end
   end
 end

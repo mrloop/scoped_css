@@ -70,4 +70,30 @@ class TestScopedCss < Minitest::Test
     assert_equal styles1, styles2
     assert_equal "", prefixed_css2
   end
+
+  def test_splat_attributes
+    # Test with a single hash
+    attrs = { class: "original", id: "test-id", "data-value": 123 }
+    result = @helper.splat_attributes(attrs)
+    assert_equal result, 'class="original" id="test-id" data-value="123"'
+
+    # Test with a hash and additional class string
+    result = @helper.splat_attributes(attrs, "additional-class")
+    assert_equal result, 'class="additional-class original" id="test-id" data-value="123"'
+
+    # Test with multiple class strings
+    result = @helper.splat_attributes(attrs, "class1", "class2")
+    assert_includes result, 'class="class1 class2 original"'
+
+    # Test with boolean attributes
+    attrs_with_boolean = { disabled: true, hidden: false }
+    result = @helper.splat_attributes(attrs_with_boolean)
+    assert_includes result, 'disabled'
+    refute_includes result, 'hidden'
+
+    # Test with empty values
+    attrs_with_empty = { class: "", id: nil }
+    result = @helper.splat_attributes(attrs_with_empty)
+    assert_equal "", result
+  end
 end
