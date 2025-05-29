@@ -1,4 +1,5 @@
 require_relative "version"
+require "digest/sha2"
 
 module ScopedCss
   module Helper
@@ -23,8 +24,10 @@ module ScopedCss
       end
 
       result = prefixed_css_block_content.respond_to?(:html_safe) ? prefixed_css_block_content.html_safe : prefixed_css_block_content
-      return [result, styles]
+      return [result, styles, prefix]
     end
+
+    private
 
     def prefix_css_classes(css_string, prefix)
       updated_css_string = css_string.dup
