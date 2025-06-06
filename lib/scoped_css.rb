@@ -43,7 +43,7 @@ module ScopedCss
 
       # Convert the combined hash into an HTML attribute string
       result = combined_attributes.map do |key, value|
-        html_key = key.to_s.dasherize
+        html_key = key.to_s.gsub('_', '-')
         escaped_value = ERB::Util.html_escape(value.to_s)
 
         # Handle boolean attributes (e.g., 'disabled' instead of 'disabled="true"')
