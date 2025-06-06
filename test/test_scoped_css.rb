@@ -58,7 +58,7 @@ class TestScopedCss < Minitest::Test
     css = ".box { border: 1px solid black; }"
 
     # First call should generate the prefixed CSS
-    prefixed_css1, styles1 = @helper.scoped_css do
+    _, styles1 = @helper.scoped_css do
       css
     end
 
