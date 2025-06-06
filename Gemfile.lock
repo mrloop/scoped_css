@@ -1,0 +1,22 @@
+PATH
+  remote: .
+  specs:
+    scoped_css (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    minitest (5.25.5)
+    rake (13.3.0)
+
+PLATFORMS
+  ruby
+  x86_64-linux
+
+DEPENDENCIES
+  minitest
+  rake
+  scoped_css!
+
+BUNDLED WITH
+   2.5.22
