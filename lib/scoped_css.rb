@@ -12,7 +12,7 @@ module ScopedCss
         css_block_content = capture(&css_block)
       end
 
-      prefix = "a#{Digest::SHA256.hexdigest(css_block_content)}"[0,8]
+      prefix = "a#{Digest::SHA1.hexdigest(css_block_content)}"[0,8]
 
       styles = Hash.new
       prefixed_css_block_content = Rails.env.local? ? ' <!-- previously output --> ' : ''

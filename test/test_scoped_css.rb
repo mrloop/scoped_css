@@ -48,7 +48,7 @@ class TestScopedCss < Minitest::Test
     template_output += "<div class='#{styles[:header]}'>Title</div>"
     template_output += "<div class='#{styles[:content]}'>Content here</div>"
 
-    prefix = "a#{Digest::SHA256.hexdigest(css)}"[0,8]
+    prefix = "a#{Digest::SHA1.hexdigest(css)}"[0,8]
     assert_includes template_output, "<style>.#{prefix}-header"
     assert_includes template_output, "class='#{prefix}-header'"
     assert_includes template_output, "class='#{prefix}-content'"
