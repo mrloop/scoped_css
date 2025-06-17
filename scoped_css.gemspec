@@ -10,7 +10,8 @@ Gem::Specification.new do |s|
   s.files       = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md"]
   s.license     = 'MIT'
   s.require_path = 'lib'
-  
+  s.homepage    = 'https://github.com/mrloop/scoped_css'
+
   s.add_development_dependency 'rake'
   s.add_development_dependency 'minitest'
 end
